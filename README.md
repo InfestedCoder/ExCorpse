@@ -11,6 +11,10 @@ authorAvatar: 'https://avatars1.githubusercontent.com/u/13746650?v=4&s=140'
 -->
 # Serverless HTTP API with DynamoDB and offline support
 
+Example taken form Adam Bergman https://github.com/adambrgmn
+
+https://www.serverless.com/examples/aws-node-rest-api-with-dynamodb-and-offline
+
 This example demonstrates how to run a service locally, using the
 [serverless-offline](https://github.com/dherault/serverless-offline) plugin. It
 provides an HTTP API to manage Todos stored in a DynamoDB, similar to the
