@@ -27,14 +27,59 @@ plugin.
 
 Test your service locally, without having to deploy it first.
 
-## Setup
+## Prereqs (for Mac)
+
+### Homebrew
+
+https://brew.sh/
+
+### npm
 
 ```bash
+brew install npm
+```
+
+### Docker
+
+```bash
+brew install --cask docker
+brew install docker-compose
+```
+After install is complete, run Docker.app to start Docker Desktop and the daemon
+
+### Serverless
+
+```bash
+brew install serverless
+```
+
+## Setup
+
+### npm
+```bash
 npm install
-serverless dynamodb install (or to use a persistent docker dynamodb instead, open a new terminal: cd ./dynamodb && docker-compose up -d)
+```
+
+### Start DynamoDB
+Open a new terminal, navigate to the project folder:
+
+```bash
+cd ./dynamodb 
+docker-compose up -d
+```
+
+### Start the Service
+
+From the main project folder:
+
+```bash
+export AWS_ACCESS_KEY_ID="your_key_id"
+export AWS_SECRET_ACCESS_KEY="your_secret_key"
 serverless offline start
 serverless dynamodb migrate (this imports schema)
 ```
+
+Note: For local testing, you do not need to use valid AWS credentials, but AWS credentials do need to be present which is why the dummy values are in the export statements above.
 
 ## Run service offline
 
@@ -100,3 +145,13 @@ curl -X DELETE -H "Content-Type:application/json" http://localhost:3000/todos/<i
 ```
 
 No output
+
+## Connecting to DynamoDB
+
+The AWS NoSQL Workbench can be used to view the contents of DynamoDB
+
+https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/workbench.html
+
+Instructions for connecting to a local running DynamoDB instance are here
+
+https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/workbench.querybuilder.connect.html
