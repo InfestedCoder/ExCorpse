@@ -5,8 +5,13 @@ test('valid segment returns 200 error code', () => {
     let event = {
         pathParameters: {
             segment: 'top'
+        },
+        body: {
+            extension: '.png'
         }
     };
+
+    event.body = JSON.stringify(event.body);
 
    initiate.initiate(event,{},mockCallback);
     expect(mockCallback.mock.calls.length).toBe(1);
@@ -19,8 +24,13 @@ test('invalid segment returns 400 error code', () => {
     let event = {
         pathParameters: {
             segment: 'invalid'
+        },
+        body: {
+            extension: '.png'
         }
     };
+
+    event.body = JSON.stringify(event.body);
 
     initiate.initiate(event,{},mockCallback);
     expect(mockCallback.mock.calls.length).toBe(1);
