@@ -1,19 +1,29 @@
 const initiate = require('../../segments/initiate-upload');
 
-test('segment is validated correctly', () => {
+test('valid segment returns 200 error code', () => {
+    const mockCallback = jest.fn();
     let event = {
         pathParameters: {
             segment: 'top'
         }
     };
 
-    expect(initiate.initiate(event)).toBe(true);
+   initiate.initiate(event,{},mockCallback);
+    expect(mockCallback.mock.calls.length).toBe(1);
+    expect(mockCallback.mock.calls[0][1]).toBeDefined();
+    expect(mockCallback.mock.calls[0][1].statusCode).toBe(200);
+});
 
-    event = {
+test('invalid segment returns 400 error code', () => {
+    const mockCallback = jest.fn();
+    let event = {
         pathParameters: {
-            segment: 'ggooggf'
+            segment: 'invalid'
         }
     };
 
-    expect(initiate.initiate(event)).toBe(false);
+    initiate.initiate(event,{},mockCallback);
+    expect(mockCallback.mock.calls.length).toBe(1);
+    expect(mockCallback.mock.calls[0][1]).toBeDefined();
+    expect(mockCallback.mock.calls[0][1].statusCode).toBe(400);
 });
