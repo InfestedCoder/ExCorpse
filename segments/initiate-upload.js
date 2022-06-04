@@ -21,13 +21,13 @@ module.exports.initiate = (event, context, callback) => {
 
     const body = JSON.parse(event.body);
 
-    let filename = uuid.v4();
+    let filename = uuid();
 
     const s3Params = {
         Bucket: s3.S3Config.segmentBucket,
         Key: `${filename}.${body.ext}`,
         ContentType: body.contentType,
-        Expires: 600 // 10 minutes
+        Expires: 60 * 10 // 10 minutes
     };
 
     const url = s3.client.getSignedUrl('putObject', s3Params);

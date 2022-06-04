@@ -64,7 +64,7 @@ npm install
 Open a new terminal, navigate to the project folder:
 
 ```bash
-cd ./dynamodb 
+cd ./dynamodb_local 
 docker-compose up -d
 ```
 

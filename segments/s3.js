@@ -1,12 +1,12 @@
 'use strict';
 
-const AWS = require('aws-sdk'); // eslint-disable-line import/no-extraneous-dependencies
+const AWS = require('aws-sdk');
 
 const client = new AWS.S3;
 
 module.exports.client = client;
 
 module.exports.S3Config = {
-    segmentBucket: 'excorpsesegments',
-    region: "us-east-2"
+    segmentBucket: 'exquisite-corpse-segments',
+    region: "us-east-1"
 }
