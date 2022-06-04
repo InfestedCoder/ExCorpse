@@ -40,6 +40,9 @@ provider:
           Resource: "arn:aws:dynamodb:${aws:region}:*:table/${self:provider.environment.DYNAMODB_TABLE}"
 
 functions:
+  # =================================================================
+  # TODO API
+  # =================================================================
   create:
     handler: todos/create.create
     events:
@@ -74,6 +77,16 @@ functions:
       - httpApi:
           path: /todos/{id}
           method: delete
+
+  # =================================================================
+  # Segment API
+  # =================================================================
+  initiate-upload:
+    handler: segments/initiate-upload.initiate
+    events:
+      - httpApi:
+          path: /drawings/{id}/segments/{segment}
+          method: post
 
 resources:
   Resources:

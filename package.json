@@ -6,11 +6,15 @@
   "author": "Christoph Gysin <christoph.gysin@gmail.com>",
   "license": "MIT",
   "dependencies": {
+    "jest": "^28.1.0",
     "uuid": "^2.0.3"
   },
   "devDependencies": {
     "aws-sdk": "^2.12.0",
     "serverless-dynamodb-local": "^0.2.40",
     "serverless-offline": "^8.8.0"
+  },
+  "scripts": {
+    "test": "jest"
   }
 }
