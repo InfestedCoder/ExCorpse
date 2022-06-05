@@ -4,10 +4,14 @@ test('valid segment returns 200 error code', () => {
     const mockCallback = jest.fn();
     let event = {
         pathParameters: {
-            segment: 'top'
+            segment: 'top',
+            drawingId: 12345
         },
         body: {
-            extension: '.png'
+            ext: '.png',
+            contentType: 'image',
+            createdBy: 'Alberto'
+
         }
     };
 
@@ -23,10 +27,14 @@ test('invalid segment returns 400 error code', () => {
     const mockCallback = jest.fn();
     let event = {
         pathParameters: {
-            segment: 'invalid'
+            segment: 'invalid',
+            drawingId: 12345
         },
         body: {
-            extension: '.png'
+            ext: '.png',
+            contentType: 'image',
+            createdBy: 'Alberto'
+
         }
     };
 

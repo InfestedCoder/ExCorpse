@@ -1,4 +1,4 @@
-service: serverless-http-api-dynamodb-local
+service: exquisite-corpse
 frameworkVersion: '3'
 
 plugins:
@@ -23,6 +23,7 @@ provider:
   runtime: nodejs12.x
   environment:
     DYNAMODB_TABLE: ${self:service}-${sls:stage}
+    S3_SEGMENT_BUCKET: 'exquisite-corpse-segments'
   httpApi:
     cors: true
   iam:
@@ -37,6 +38,12 @@ provider:
             - dynamodb:UpdateItem
             - dynamodb:DeleteItem
           Resource: "arn:aws:dynamodb:${aws:region}:*:table/${self:provider.environment.DYNAMODB_TABLE}"
+        - Effect: Allow
+          Action:
+            - s3:GetObject
+            - s3:PutObject
+            - s3:PutObjectAcl
+          Resource: "arn:aws:s3:::${self:provider.environment.S3_SEGMENT_BUCKET}/*"
 
 functions:
   # =================================================================

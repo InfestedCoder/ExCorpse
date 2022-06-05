@@ -76,7 +76,7 @@ From the main project folder:
 export AWS_ACCESS_KEY_ID="your_key_id"
 export AWS_SECRET_ACCESS_KEY="your_secret_key"
 serverless offline start
-serverless dynamodb migrate (this imports schema)
+serverless dynamodb migrate
 ```
 
 Note: For local testing, you do not need to use valid AWS credentials, but AWS credentials do need to be present which is why the dummy values are in the export statements above.
