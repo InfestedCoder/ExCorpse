@@ -93,7 +93,13 @@ functions:
       - httpApi:
           path: /drawings/{id}/segments/{segment}
           method: post
-
+  s3ProcessUploadedSegment:
+    handler: segments/processUploadedSegment.process
+    events:
+      - s3:
+          bucket: "${self:provider.environment.S3_SEGMENT_BUCKET}"
+          event: s3:ObjectCreated:*
+          existing: true
 resources:
   Resources:
     TodosDynamoDbTable:
