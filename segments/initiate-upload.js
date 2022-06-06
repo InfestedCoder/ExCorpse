@@ -19,7 +19,15 @@ module.exports.initiate = (event, context, callback) => {
         return;
     }
 
+    const drawingId = event.pathParameters.id;
+
     const body = JSON.parse(event.body);
+
+    const metadata = {
+        drawingId: drawingId,
+        segment: segment,
+        createdBy: body.createdBy,
+    };
 
     let filename = uuid();
 
@@ -27,7 +35,8 @@ module.exports.initiate = (event, context, callback) => {
         Bucket: s3.S3Config.segmentBucket,
         Key: `${filename}.${body.ext}`,
         ContentType: body.contentType,
-        Expires: 60 * 10 // 10 minutes
+        Expires: 60 * 10, // 10 minutes.
+        Metadata: metadata
     };
 
     const url = s3.client.getSignedUrl('putObject', s3Params);
