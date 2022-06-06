@@ -2,11 +2,18 @@
 
 const AWS = require('aws-sdk');
 
-const client = new AWS.S3;
+let options = {};
 
-module.exports.client = client;
-
-module.exports.S3Config = {
-    segmentBucket: process.env.S3_SEGMENT_BUCKET || 'dummyBucket',
-    region: "us-east-1"
+// connect to local S3 if running offline
+if (process.env.IS_OFFLINE) {
+    options = {
+        s3ForcePathStyle: true,
+        accessKeyId: "S3RVER", // This specific key is required when working offline
+        secretAccessKey: "S3RVER",
+        endpoint: new AWS.Endpoint("http://localhost:4569"),
+    };
 }
+
+const client = new AWS.S3(options);
+
+module.exports = client;

@@ -3,6 +3,7 @@ frameworkVersion: '3'
 
 plugins:
   - serverless-dynamodb-local
+  - serverless-s3-local
   - serverless-offline
 
 custom:
@@ -17,13 +18,18 @@ custom:
       noStart: true
     migration:
       dir: offline/migrations
+  s3:
+    host: localhost
+    directory: ./tmp
+    cors: offline/cors.xml
+    allowMismatchedSignatures: true
 
 provider:
   name: aws
   runtime: nodejs12.x
   environment:
     DYNAMODB_TABLE: ${self:service}-${sls:stage}
-    S3_SEGMENT_BUCKET: 'exquisite-corpse-segments'
+    S3_SEGMENT_BUCKET: '${self:service}-segments'
   httpApi:
     cors: true
   iam:
