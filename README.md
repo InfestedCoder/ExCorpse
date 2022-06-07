@@ -116,7 +116,7 @@ Example output:
 ### Get one Todo
 
 ```bash
-# Replace the <id> part with a real id from your todos table
+# Replace the <id> part with a real id from your drawings table
 curl -H "Content-Type:application/json" http://localhost:3000/todos/<id>
 ```
 
@@ -128,7 +128,7 @@ Example Result:
 ### Update a Todo
 
 ```bash
-# Replace the <id> part with a real id from your todos table
+# Replace the <id> part with a real id from your drawings table
 curl -X PUT -H "Content-Type:application/json" http://localhost:3000/todos/<id> --data '{ "text": "Learn Serverless", "checked": true }'
 ```
 
@@ -140,7 +140,7 @@ Example Result:
 ### Delete a Todo
 
 ```bash
-# Replace the <id> part with a real id from your todos table
+# Replace the <id> part with a real id from your drawings table
 curl -X DELETE -H "Content-Type:application/json" http://localhost:3000/todos/<id>
 ```
 
