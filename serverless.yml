@@ -28,7 +28,7 @@ provider:
   name: aws
   runtime: nodejs12.x
   environment:
-    DYNAMODB_TABLE: ${self:service}-${sls:stage}
+    DYNAMODB_TABLE: drawings-${sls:stage}
     S3_SEGMENT_BUCKET: '${self:service}-segments'
   httpApi:
     cors: true
@@ -56,38 +56,38 @@ functions:
   # TODO API
   # =================================================================
   create:
-    handler: todos/create.create
+    handler: drawings/create.create
     events:
       - httpApi:
-          path: /todos
+          path: /drawings
           method: post
 
   list:
-    handler: todos/list.list
+    handler: drawings/list.list
     events:
       - httpApi:
-          path: /todos
+          path: /drawings
           method: get
 
   get:
-    handler: todos/get.get
+    handler: drawings/get.get
     events:
       - httpApi:
-          path: /todos/{id}
+          path: /drawings/{id}
           method: get
 
   update:
-    handler: todos/update.update
+    handler: drawings/update.update
     events:
       - httpApi:
-          path: /todos/{id}
+          path: /drawings/{id}
           method: put
 
   delete:
-    handler: todos/delete.delete
+    handler: drawings/delete.delete
     events:
       - httpApi:
-          path: /todos/{id}
+          path: /drawings/{id}
           method: delete
 
   # =================================================================

@@ -7,7 +7,7 @@ module.exports.list = (event, context, callback) => {
     TableName: process.env.DYNAMODB_TABLE,
   };
 
-  // fetch all todos from the database
+  // fetch all drawings from the database
   dynamodb.scan(params, (error, result) => {
     // handle potential errors
     if (error) {
