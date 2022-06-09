@@ -1,20 +1,50 @@
 'use strict';
 const s3 = require('./s3');
+const sqs = require('./sqs');
 
-module.exports.process = (event, context, callback) => {
+async function process(event, context, callback) {
     console.log('42 L.U.E. Received event:', JSON.stringify(event, null, 2));
 
     const s3Record = event.Records[0].s3;
 
-    s3.headObject({ Bucket: s3Record.bucket.name, Key: s3Record.object.key }).promise().then((s3Object) =>{
-        if (!s3Object.Metadata) {
-            // Shouldn't get here
-            const errorMessage = 'Cannot process segment as no metadata is set for it';
-            console.error(errorMessage, { s3Object, event });
-            throw new Error(errorMessage);
-        }
+    const s3Object = await s3.headObject({Bucket: s3Record.bucket.name, Key: s3Record.object.key}).promise();
 
-        // TODO - persist segment to DynamoDB
-        console.log(s3Object.Metadata);
-    });
+    if (!s3Object.Metadata) {
+        // Shouldn't get here
+        const errorMessage = 'Cannot process segment as no metadata is set for it';
+        console.error(errorMessage, {s3Object, event});
+        throw new Error(errorMessage);
+    }
+
+    // TODO - persist segment to DynamoDB
+    console.log(s3Object.Metadata);
+
+    const queueUrl = await sqs.QueueUrl;
+
+    console.log(queueUrl.QueueUrl);
+
+    const sendMessageParams = {
+        MessageBody: JSON.stringify(s3Object.Metadata),
+        QueueUrl: queueUrl.QueueUrl
+    }
+
+    console.log(sendMessageParams);
+
+    // TODO - if drawing has all 3 segments, post drawing object to queue for segment processing
+    try {
+        console.log('sending message');
+        sqs.sendMessage(sendMessageParams, (err, res) => {
+            if (err) {
+                console.error(err);
+            } else {
+                console.log(res);
+            }
+        })
+    } catch (error) {
+        console.error(error);
+    }
+
+    console.log('message sent')
 }
+
+module.exports.process = process;

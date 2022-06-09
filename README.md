@@ -68,6 +68,14 @@ cd ./dynamodb_local
 docker-compose up -d
 ```
 
+### Start ElasticMQ
+Open a new terminal, navigate to the project folder:
+
+```bash
+cd ./elasticMQ 
+docker-compose up -d
+```
+
 ### Start the Service
 
 From the main project folder:

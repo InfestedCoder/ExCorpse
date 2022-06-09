@@ -4,6 +4,7 @@ frameworkVersion: '3'
 plugins:
   - serverless-dynamodb-local
   - serverless-s3-local
+  - serverless-offline-sqs
   - serverless-offline
 
 custom:
@@ -24,11 +25,26 @@ custom:
     cors: offline/cors.xml
     allowMismatchedSignatures: true
 
+  serverless-offline-sqs:
+    autoCreate: true
+    apiVersion: "2012-11-05"
+    endpoint: http://0.0.0.0:9324
+    region: us-east-1
+    skipCacheInvalidation: false
+
+package:
+  patterns:
+    - '!elasticMQ/**'
+    - '!dynamodb_local/**'
+    - '!offline/**'
+    - '!tmp/**'
+
 provider:
   name: aws
   runtime: nodejs12.x
   environment:
-    DYNAMODB_TABLE: drawings-${sls:stage}
+    SQS_DRAWING_QUEUE: 'drawings-${sls:stage}'
+    DYNAMODB_TABLE: 'drawings-${sls:stage}'
     S3_SEGMENT_BUCKET: '${self:service}-segments'
   httpApi:
     cors: true
@@ -50,6 +66,14 @@ provider:
             - s3:PutObject
             - s3:PutObjectAcl
           Resource: "arn:aws:s3:::${self:provider.environment.S3_SEGMENT_BUCKET}/*"
+        - Effect: Allow
+          Action:
+            - SQS:SendMessage
+            - SQS:DeleteMessage
+            - SQS:ReceiveMessage
+            - SQS:GetQueueUrl
+            - SQS:ListQueues
+          Resource: "arn:aws:sqs:${aws:region}:*:${self:provider.environment.SQS_DRAWING_QUEUE}"
 
 functions:
   # =================================================================
@@ -106,6 +130,15 @@ functions:
           bucket: "${self:provider.environment.S3_SEGMENT_BUCKET}"
           event: s3:ObjectCreated:*
           existing: true
+  drawingsQueueReceiver:
+    handler: segments/drawingsQueueReceiver.handler
+    description: lambda function that subscribes to the drawings SQS queue
+    events:
+      - sqs:
+          arn:
+            Fn::GetAtt:
+              - DrawingsQueue
+              - Arn
 resources:
   Resources:
     TodosDynamoDbTable:
@@ -132,3 +165,7 @@ resources:
             - AllowedHeaders: [ '*' ]
               AllowedMethods: [ 'GET', 'PUT', 'POST' ]
               AllowedOrigins: [ '*' ]
+    DrawingsQueue:
+      Type: AWS::SQS::Queue
+      Properties:
+        QueueName: !Sub '${self:provider.environment.SQS_DRAWING_QUEUE}'
