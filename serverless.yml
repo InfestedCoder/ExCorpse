@@ -168,4 +168,4 @@ resources:
     DrawingsQueue:
       Type: AWS::SQS::Queue
       Properties:
-        QueueName: !Sub '${self:provider.environment.SQS_DRAWING_QUEUE}'
+        QueueName: 'drawings-${sls:stage}'
