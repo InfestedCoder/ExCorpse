@@ -36,15 +36,15 @@ async function process(event, context, callback) {
         sqs.sendMessage(sendMessageParams, (err, res) => {
             if (err) {
                 console.error(err);
+                console.error("message error")
             } else {
                 console.log(res);
+                console.log('message sent')
             }
         })
     } catch (error) {
         console.error(error);
     }
-
-    console.log('message sent')
 }
 
 module.exports.process = process;

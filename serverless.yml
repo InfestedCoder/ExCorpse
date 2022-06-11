@@ -6,6 +6,7 @@ plugins:
   - serverless-s3-local
   - serverless-offline-sqs
   - serverless-offline
+  - serverless-python-requirements
 
 custom:
   dynamodb:
@@ -31,6 +32,9 @@ custom:
     endpoint: http://0.0.0.0:9324
     region: us-east-1
     skipCacheInvalidation: false
+
+  pythonRequirements:
+    dockerizePip: non-Linux
 
 package:
   patterns:
@@ -131,8 +135,9 @@ functions:
           event: s3:ObjectCreated:*
           existing: true
   drawingsQueueReceiver:
-    handler: segments/drawingsQueueReceiver.handler
+    handler: segments/drawingsQueueReceiver.receive
     description: lambda function that subscribes to the drawings SQS queue
+    runtime: python3.7
     events:
       - sqs:
           arn:
