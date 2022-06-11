@@ -33,7 +33,7 @@ async function process(event, context, callback) {
     // TODO - if drawing has all 3 segments, post drawing object to queue for segment processing
     try {
         console.log('sending message');
-        sqs.sendMessage(sendMessageParams, (err, res) => {
+        await sqs.sendMessage(sendMessageParams, (err, res) => {
             if (err) {
                 console.error(err);
                 console.error("message error")

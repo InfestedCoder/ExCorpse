@@ -42,6 +42,8 @@ package:
     - '!dynamodb_local/**'
     - '!offline/**'
     - '!tmp/**'
+    - '!venv/**'
+    - '!.pytest_cache/**'
 
 provider:
   name: aws
