@@ -52,6 +52,7 @@ provider:
     SQS_DRAWING_QUEUE: 'drawings-${sls:stage}'
     DYNAMODB_TABLE: 'drawings-${sls:stage}'
     S3_SEGMENT_BUCKET: '${self:service}-segments'
+    S3_DRAWING_BUCKET: "${self:service}-drawings"
   httpApi:
     cors: true
   iam:
@@ -72,6 +73,12 @@ provider:
             - s3:PutObject
             - s3:PutObjectAcl
           Resource: "arn:aws:s3:::${self:provider.environment.S3_SEGMENT_BUCKET}/*"
+        - Effect: Allow
+          Action:
+            - s3:GetObject
+            - s3:PutObject
+            - s3:PutObjectAcl
+          Resource: "arn:aws:s3:::${self:provider.environment.S3_DRAWING_BUCKET}/*"
         - Effect: Allow
           Action:
             - SQS:SendMessage
@@ -130,10 +137,17 @@ functions:
           path: /drawings/{id}/segments/{segment}
           method: post
   s3ProcessUploadedSegment:
-    handler: segments/processUploadedSegment.process
+    handler: segments/processUploadedSegment.handler
     events:
       - s3:
           bucket: "${self:provider.environment.S3_SEGMENT_BUCKET}"
+          event: s3:ObjectCreated:*
+          existing: true
+  s3ProcessUploadedDrawing:
+    handler: segments/processUploadedDrawing.handler
+    events:
+      - s3:
+          bucket: "${self:provider.environment.S3_DRAWING_BUCKET}"
           event: s3:ObjectCreated:*
           existing: true
   drawingsQueueReceiver:
@@ -176,3 +190,13 @@ resources:
       Type: AWS::SQS::Queue
       Properties:
         QueueName: 'drawings-${sls:stage}'
+    DrawingsS3Bucket:
+      Type: AWS::S3::Bucket
+      Properties:
+        BucketName: !Sub '${self:provider.environment.S3_DRAWING_BUCKET}'
+        AccessControl: Private
+        CorsConfiguration:
+          CorsRules:
+            - AllowedHeaders: [ '*' ]
+              AllowedMethods: [ 'GET', 'PUT', 'POST' ]
+              AllowedOrigins: [ '*' ]
