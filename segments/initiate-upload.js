@@ -36,6 +36,7 @@ module.exports.initiate = (event, context, callback) => {
         Key: `${filename}.${body.ext}`,
         ContentType: body.contentType,
         Expires: 60 * 10, // 10 minutes.
+        ACL: 'public-read',
         Metadata: metadata
     };
 

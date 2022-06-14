@@ -1,5 +1,10 @@
+.DS_Store
 .dynamodb
 .serverless
 node_modules
 .idea
 tmp
+.pytest_cache
+*.pytest_cache
+*__pycache__*
+venv
