@@ -32,15 +32,15 @@ def process_record(record):
     imMiddle = Image.open(requests.get(middleImageUrl, stream=True).raw)
     imBottom = Image.open(requests.get(bottomImageUrl, stream=True).raw)
 
-    img = Image.new("RGB", (500, 1500), "white")
+    img = Image.new("RGBA", (500, 1500), "white")
     img.paste(imTop, (0, 0))
     img.paste(imMiddle, (0, 500))
     img.paste(imBottom, (0, 1000))
 
     # encode the picture to a base64 response
     buffered = io.BytesIO()
-    img.save(buffered, "JPEG")
-#     img.save("combined.jpg", "JPEG")
+    img.save(buffered, "PNG")
+#     img.save("combined.png", "png")
     buffered.seek(0)
 
     upload_to_s3(buffered, drawingid)
@@ -62,7 +62,7 @@ def upload_to_s3(image, drawingid):
             service_name='s3'
         )
 
-    s3_client.upload_fileobj(image, os.environ.get('S3_DRAWING_BUCKET'), drawingid + ".jpg",
+    s3_client.upload_fileobj(image, os.environ.get('S3_DRAWING_BUCKET'), drawingid + ".png",
                              ExtraArgs={'Metadata': {'drawingid': drawingid},
                                         'ACL': 'public-read'})
 
