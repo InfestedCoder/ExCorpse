@@ -87,10 +87,13 @@ provider:
             - SQS:GetQueueUrl
             - SQS:ListQueues
           Resource: "arn:aws:sqs:${aws:region}:*:${self:provider.environment.SQS_DRAWING_QUEUE}"
-
+        - Effect: Allow
+          Action:
+            - rekognition:DetectLabels
+          Resource: "*"
 functions:
   # =================================================================
-  # TODO API
+  # Drawings API
   # =================================================================
   create:
     handler: drawings/create.create
@@ -145,6 +148,15 @@ functions:
           existing: true
   s3ProcessUploadedDrawing:
     handler: segments/processUploadedDrawing.handler
+    events:
+      - s3:
+          bucket: "${self:provider.environment.S3_DRAWING_BUCKET}"
+          event: s3:ObjectCreated:*
+          existing: true
+  drawingsTagger:
+    handler: drawings/drawingsTagger.handler
+    description: lambda function that sends image from s3 to rekognition
+    runtime: python3.7
     events:
       - s3:
           bucket: "${self:provider.environment.S3_DRAWING_BUCKET}"
