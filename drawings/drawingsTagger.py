@@ -30,15 +30,18 @@ def handler(event, context):
     # print("Received event: " + json.dumps(event, indent=2))
 
     # Get the object from the event
-    bucket = './tmp'
     # bucket = event['Records'][0]['s3']['bucket']['name']
-    key = urllib.parse.unquote_plus(event['Records'][0]['s3']['object']['key'])
+    bucket = 'exquisite-corpse-drawings'
+    key = 'a19e2415-605a-4447-a6e2-cb35567d96f2.png'
+    # key = urllib.parse.unquote_plus(event['Records'][0]['s3']['object']['key'])
     try:
         # Calls rekognition DetectLabels API to detect labels in S3 object
         response = detect_labels(bucket, key)
 
         # Print response to console.
+
         print(response)
+        print(key)
 
         return response
     except Exception as e:
