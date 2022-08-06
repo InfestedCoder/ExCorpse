@@ -37,6 +37,12 @@ def process_record(record):
     img.paste(imMiddle, (0, 500))
     img.paste(imBottom, (0, 1000))
 
+    # Add a solid white background to the image
+    fill_color = (255,255,255)
+    background = Image.new(img.mode[:-1], img.size, fill_color)
+    background.paste(img, img.split()[-1])  # omit transparency
+    img = background
+
     # encode the picture to a base64 response
     buffered = io.BytesIO()
     img.save(buffered, "PNG")
