@@ -6,7 +6,7 @@ This repository contains the IaC that supports this process, Lambda in both Pyth
 The infrastructure contained in this repository is deployed via AWS Amplify. 
 
 To see it in action visit the Amplify hosted UI at :  https://amplify.d1kgy66goa03vv.amplifyapp.com/
-And the drawing viewer to see your results at : https://main.d13cwcv20gn7pr.amplifyapp.com/
+Visit the drawing viewer to see your results at : https://main.d13cwcv20gn7pr.amplifyapp.com/
 
 
 # Serverless-plugin used to test the drawing service locally:
