@@ -27,7 +27,7 @@ module.exports.create = (event, context, callback) => {
     },
   };
 
-  // write the todo to the database
+  // write the drawing to the database
   dynamodb.put(params, (error) => {
     // handle potential errors
     if (error) {
@@ -35,7 +35,7 @@ module.exports.create = (event, context, callback) => {
       callback(null, {
         statusCode: error.statusCode || 501,
         headers: { 'Content-Type': 'text/plain' },
-        body: 'Couldn\'t create the todo item.',
+        body: 'Couldn\'t create the corpse segment.',
       });
       return;
     }

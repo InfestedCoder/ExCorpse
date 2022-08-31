@@ -52,7 +52,7 @@ async function processRecord(s3Record, timestamp) {
         ReturnValues: 'ALL_NEW',
     };
 
-    // update the todo in the database
+    // update the drawing segment in the database
     const result = await dynamodb.update(params).promise();
 
     let drawing = result.Attributes;
